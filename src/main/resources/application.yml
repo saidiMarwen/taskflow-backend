@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: taskflow-backend
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/taskflow
+    username: taskflow
+    password: taskflow123
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+server:
+  port: 8080
+
+app:
+  jwt:
+    secret: ${JWT_SECRET:7Bm9UkZBeTUHuzUFQZmZ+omdUTn1MqvHgeVqFU2VK10=}
+    expiration-ms: 86400000   # 24 heures

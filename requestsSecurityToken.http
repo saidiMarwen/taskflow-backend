@@ -1,0 +1,16 @@
+ "email": "marwen@test.com", "password": "secret123" }
+
+### 3. Avec token : 200
+GET http://localhost:8080/api/projects
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtYXJ3ZW5AdGVzdC5jb20iLCJpYXQiOjE3OTEzNTU0MDcsImV4cCI6MTc5MTQ0MTgwN30.uix6jzPplNICITbB5KRyrmI7mGt54eogJmXOuxyoncE
+
+### 4. Créer un projet
+POST http://localhost:8080/api/projects
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtYXJ3ZW5AdGVzdC5jb20iLCJpYXQiOjE3OTEzNTU0MDcsImV4cCI6MTc5MTQ0MTgwN30.uix6jzPplNICITbB5KRyrmI7mGt54eogJmXOuxyoncE
+Content-Type: application/json
+
+{ "name": "Mon projet", "description": "Test JWT" }
+
+### 5. Token falsifié : 401
+GET http://localhost:8080/api/projects
+Authorization: Bearer abc.def.ghi

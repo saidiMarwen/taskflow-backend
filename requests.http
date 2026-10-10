@@ -1,0 +1,32 @@
+### Créer un projet
+POST http://localhost:8080/api/projects
+Content-Type: application/json
+
+{ "name": "Site web", "description": "Refonte du site" }
+
+### Lister les projets
+GET http://localhost:8080/api/projects
+
+### Créer une tâche dans le projet 1
+POST http://localhost:8080/api/projects/1/tasks
+Content-Type: application/json
+
+{ "title": "Maquettes", "priority": "HIGH", "dueDate": "2026-11-01" }
+
+### Lister les tâches du projet 1
+GET http://localhost:8080/api/projects/1/tasks
+
+### Passer la tâche 1 en IN_PROGRESS (Kanban)
+PATCH http://localhost:8080/api/tasks/1/status
+Content-Type: application/json
+
+{ "status": "IN_PROGRESS" }
+
+### Erreur de validation (400)
+POST http://localhost:8080/api/projects
+Content-Type: application/json
+
+{ "name": "" }
+
+### Projet inexistant (404)
+GET http://localhost:8080/api/projects/999
