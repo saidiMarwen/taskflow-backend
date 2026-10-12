@@ -13,5 +13,7 @@ public record TaskResponse(
         TaskPriority priority,
         LocalDate dueDate,
         Long projectId,
-        LocalDateTime createdAt
+        LocalDateTime createdAt,
+        Long assigneeId,
+        String assigneeName
 ) {}

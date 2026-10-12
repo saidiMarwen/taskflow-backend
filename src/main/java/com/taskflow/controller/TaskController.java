@@ -1,5 +1,6 @@
 package com.taskflow.controller;
 
+import com.taskflow.dto.AssignRequest;
 import com.taskflow.dto.TaskRequest;
 import com.taskflow.dto.TaskResponse;
 import com.taskflow.dto.TaskStatusRequest;
@@ -47,5 +48,12 @@ public class TaskController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long id, Authentication auth) {
         taskService.delete(id, auth.getName());
+    }
+
+    @PatchMapping("/tasks/{id}/assignee")
+    public TaskResponse assign(@PathVariable Long id,
+                               @RequestBody AssignRequest request,
+                               Authentication auth) {
+        return taskService.assign(id, request.userId(), auth.getName());
     }
 }

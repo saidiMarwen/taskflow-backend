@@ -30,6 +30,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         if (header != null && header.startsWith("Bearer ")) {
             String token = header.substring(7);
+            System.out.println("JWT reçu, valide = " + jwtService.isValid(token));
 
             if (jwtService.isValid(token)
                     && SecurityContextHolder.getContext().getAuthentication() == null) {
