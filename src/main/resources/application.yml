@@ -15,6 +15,14 @@ spring:
       hibernate:
         format_sql: true
 
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: taskflow-notifications
+      auto-offset-reset: earliest
+
+
+
 server:
   port: 8080
 
