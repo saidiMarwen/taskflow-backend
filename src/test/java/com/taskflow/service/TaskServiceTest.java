@@ -36,7 +36,7 @@ class TaskServiceTest {
     void updateStatusMovesTheTask() {
         Task task = Task.builder().id(5L).title("Maquettes")
                 .project(Project.builder().id(1L).build()).build();
-        when(taskRepository.findByIdAndProjectOwnerEmail(5L, "a@test.com"))
+        when(taskRepository.findAccessibleById(5L, "a@test.com"))
                 .thenReturn(Optional.of(task));
 
         TaskResponse res = taskService.updateStatus(5L, TaskStatus.IN_PROGRESS, "a@test.com");
@@ -47,7 +47,7 @@ class TaskServiceTest {
 
     @Test
     void updateStatusFailsForForeignTask() {
-        when(taskRepository.findByIdAndProjectOwnerEmail(5L, "bob@test.com"))
+        when(taskRepository.findAccessibleById(5L, "bob@test.com"))
                 .thenReturn(Optional.empty());
 
         assertThrows(ResourceNotFoundException.class,
