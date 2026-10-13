@@ -10,19 +10,24 @@ import java.util.Optional;
 
 public interface ProjectRepository extends JpaRepository<Project, Long> {
     List<Project> findByOwnerEmail(String email);
+
     Optional<Project> findByIdAndOwnerEmail(Long id, String email);
 
     @Query("""
-    SELECT DISTINCT p FROM Project p
-    LEFT JOIN p.tasks t
-    WHERE p.owner.email = :email OR t.assignee.email = :email
-""")
+                SELECT DISTINCT p FROM Project p
+                    LEFT JOIN p.owner o
+                    LEFT JOIN p.tasks t
+                    LEFT JOIN t.assignee a
+                    WHERE o.email = :email OR a.email = :email
+            """)
     List<Project> findAccessible(@Param("email") String email);
 
     @Query("""
-    SELECT DISTINCT p FROM Project p
-    LEFT JOIN p.tasks t
-    WHERE p.id = :id AND (p.owner.email = :email OR t.assignee.email = :email)
-""")
+                SELECT DISTINCT p FROM Project p
+                    LEFT JOIN p.owner o
+                    LEFT JOIN p.tasks t
+                    LEFT JOIN t.assignee a
+                    WHERE p.id = :id AND (o.email = :email OR a.email = :email)
+            """)
     Optional<Project> findAccessibleById(@Param("id") Long id, @Param("email") String email);
 }

@@ -13,9 +13,12 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
     Optional<Task> findByIdAndProjectOwnerEmail(Long id, String email);
 
     @Query("""
-        SELECT t FROM Task t
-        WHERE t.id = :id AND (t.project.owner.email = :email OR t.assignee.email = :email)
-    """)
+                SELECT t FROM Task t
+                    LEFT JOIN t.project p
+                    LEFT JOIN p.owner o
+                    LEFT JOIN t.assignee a
+                    WHERE t.id = :id AND (o.email = :email OR a.email = :email)
+            """)
     Optional<Task> findAccessibleById(@Param("id") Long id, @Param("email") String email);
 
 }
