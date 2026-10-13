@@ -20,12 +20,12 @@ public class ProjectController {
 
     @GetMapping
     public List<ProjectResponse> findAll(Authentication auth) {
-        return projectService.findAll(auth.getName());
+        return projectService.findAccessible(auth.getName());
     }
 
     @GetMapping("/{id}")
     public ProjectResponse findById(@PathVariable Long id, Authentication auth) {
-        return projectService.findById(id, auth.getName());
+        return projectService.findAccessibleById(id, auth.getName());
     }
 
     @PostMapping

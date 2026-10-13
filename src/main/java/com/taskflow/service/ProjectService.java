@@ -21,14 +21,24 @@ public class ProjectService {
     private final ProjectRepository projectRepository;
     private final UserRepository userRepository;
 
-    @Transactional(readOnly = true)
-    public List<ProjectResponse> findAll(String email) {
-        return projectRepository.findByOwnerEmail(email).stream().map(this::toResponse).toList();
-    }
+//    @Transactional(readOnly = true)
+//    public List<ProjectResponse> findAll(String email) {
+//        return projectRepository.findByOwnerEmail(email).stream().map(this::toResponse).toList();
+//    }
 
     @Transactional(readOnly = true)
-    public ProjectResponse findById(Long id, String email) {
-        return toResponse(getEntity(id, email));
+    public List<ProjectResponse> findAccessible(String email) {
+        return projectRepository.findAccessible(email).stream().map(this::toResponse).toList();
+    }
+
+//    @Transactional(readOnly = true)
+//    public ProjectResponse findById(Long id, String email) {
+//        return toResponse(getEntity(id, email));
+//    }
+
+    @Transactional(readOnly = true)
+    public ProjectResponse findAccessibleById(Long id, String email) {
+        return toResponse(getAccessibleEntity(id, email));
     }
 
     public ProjectResponse create(ProjectRequest request, String email) {
@@ -62,5 +72,11 @@ public class ProjectService {
     private ProjectResponse toResponse(Project p) {
         return new ProjectResponse(p.getId(), p.getName(), p.getDescription(),
                 p.getTasks().size(), p.getCreatedAt());
+    }
+
+    /** Lecture : propriétaire OU assigné à une tâche du projet. */
+    public Project getAccessibleEntity(Long id, String email) {
+        return projectRepository.findAccessibleById(id, email)
+                .orElseThrow(() -> new ResourceNotFoundException("Projet introuvable : " + id));
     }
 }

@@ -32,7 +32,7 @@ class ProjectServiceTest {
         Project p = Project.builder().id(1L).name("Site").build();
         when(projectRepository.findByOwnerEmail("a@test.com")).thenReturn(List.of(p));
 
-        List<ProjectResponse> result = projectService.findAll("a@test.com");
+        List<ProjectResponse> result = projectService.findAccessible("a@test.com");
 
         assertEquals(1, result.size());
         assertEquals("Site", result.get(0).name());
@@ -57,7 +57,7 @@ class ProjectServiceTest {
         when(projectRepository.findByIdAndOwnerEmail(1L, "bob@test.com")).thenReturn(Optional.empty());
 
         assertThrows(ResourceNotFoundException.class,
-                () -> projectService.findById(1L, "bob@test.com"));
+                () -> projectService.findAccessibleById(1L, "bob@test.com"));
     }
 
     @Test

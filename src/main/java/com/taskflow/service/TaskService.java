@@ -29,8 +29,9 @@ public class TaskService {
 
     @Transactional(readOnly = true)
     public List<TaskResponse> findByProject(Long projectId, String email) {
-        projectService.getEntity(projectId, email);
+        projectService.getAccessibleEntity(projectId, email);
         return taskRepository.findByProjectId(projectId).stream().map(this::toResponse).toList();
+
     }
 
     public TaskResponse create(Long projectId, TaskRequest request, String email) {
@@ -57,7 +58,7 @@ public class TaskService {
     }
 
     public TaskResponse updateStatus(Long taskId, TaskStatus status, String email) {
-        Task task = getEntity(taskId, email);
+        Task task = getAccessibleEntity(taskId, email);
         task.setStatus(status);
         return toResponse(task);
     }
@@ -91,5 +92,10 @@ public class TaskService {
                     assignee.getId(), email));
         }
         return toResponse(task);
+    }
+
+    private Task getAccessibleEntity(Long id, String email) {
+        return taskRepository.findAccessibleById(id, email)
+                .orElseThrow(() -> new ResourceNotFoundException("Tâche introuvable : " + id));
     }
 }
