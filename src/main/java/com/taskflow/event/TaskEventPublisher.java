@@ -18,7 +18,7 @@ public class TaskEventPublisher {
     public void publishAssigned(TaskAssignedEvent event){
         try{
             String json = objectMapper.writeValueAsString(event);
-            kafkaTemplate.send(TOPIC, String.valueOf(event.assigneeId()), json);
+            kafkaTemplate.send(TOPIC, String.valueOf(event.assigneeEmail()), json);
             log.info("Evenement publié : {}", json);
         }catch(Exception e) {
             log.error("Echec de publication kafka", e);

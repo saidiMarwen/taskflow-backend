@@ -89,7 +89,7 @@ public class TaskService {
         if (!assignee.getEmail().equals(email)) {
             publisher.publishAssigned(new TaskAssignedEvent(
                     task.getId(), task.getTitle(), task.getProject().getId(),
-                    assignee.getId(), email));
+                    assignee.getEmail(), email));
         }
         return toResponse(task);
     }
