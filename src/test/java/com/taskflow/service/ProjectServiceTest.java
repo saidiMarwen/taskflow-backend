@@ -30,7 +30,7 @@ class ProjectServiceTest {
     @Test
     void findAllReturnsOnlyProjectsOfTheUser() {
         Project p = Project.builder().id(1L).name("Site").build();
-        when(projectRepository.findByOwnerEmail("a@test.com")).thenReturn(List.of(p));
+        when(projectRepository.findAccessible("a@test.com")).thenReturn(List.of(p));
 
         List<ProjectResponse> result = projectService.findAccessible("a@test.com");
 
@@ -54,7 +54,7 @@ class ProjectServiceTest {
 
     @Test
     void findByIdThrowsWhenProjectBelongsToSomeoneElse() {
-        when(projectRepository.findByIdAndOwnerEmail(1L, "bob@test.com")).thenReturn(Optional.empty());
+        when(projectRepository.findAccessibleById(1L, "bob@test.com")).thenReturn(Optional.empty());
 
         assertThrows(ResourceNotFoundException.class,
                 () -> projectService.findAccessibleById(1L, "bob@test.com"));
